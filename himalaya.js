@@ -1,12 +1,12 @@
 /**
  * himalaya v1.1.0, compiled without sourcemap support, https://github.com/andrejewski/himalaya
  *
- * Example Usage of a post-response script:
+ * Example usage of a post-response script, making a GET request to www.google.com:
  *
  * ```js
     var responseStr = response.body.replace(/[\n\r]+/g, '').replace(/\s{2,}/g, '');
     var result = himalaya.parse(responseStr);
-    var head = _.find(result, function(tag) {
+    var head = _.find(result[1].children, function(tag) {
         return tag.tagName === 'head';
     });
     assert(head !== undefined, 'head is referenced');
