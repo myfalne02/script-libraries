@@ -1,0 +1,67 @@
+{
+  "trigger_url": "https://api.runscope.com/radar/b9cdb268-3cea-4f25-97b9-7b94b0467634/trigger", 
+  "name": "Weather", 
+  "version": "1.0", 
+  "exported_at": 1530605043, 
+  "steps": [
+    {
+      "skipped": false, 
+      "url": "http://api.openweathermap.org/data/2.5/weather?q=london&appid=f400c59771e765a162b733a86cd6a317", 
+      "variables": [], 
+      "args": {}, 
+      "step_type": "request", 
+      "auth": {}, 
+      "fragment": "", 
+      "note": "", 
+      "headers": {}, 
+      "assertions": [
+        {
+          "comparison": "equal_number", 
+          "value": 200, 
+          "source": "response_status"
+        }
+      ], 
+      "scripts": [
+        "var entries = [],\n    doc = {},\n    date = new Date().toISOString(),\n    jsondata = JSON.parse(response.body);\n\ndoc = {\n    timestamp: date,\n    metric_name: \"temperature\",\n    metric_type: \"temperature\",\n    metric_value: jsondata.main.temp - 273,\n    metric_unit: \"deg\",\n    configuration_item_type: \"ComputerSystem\",\n    configuration_item: jsondata.name + \"-\" + jsondata.id,\n    host: jsondata.name + \"-\" + jsondata.id,\n    ip: \"10.10.10.10\",\n    tags: [\"London\",\"weather\"]\n};\nentries.push(doc);\ndoc = {\n    timestamp: date,\n    metric_name: \"pressure\",\n    metric_type: \"pressure\",\n    metric_value: jsondata.main.pressure,\n    metric_unit: \"mb\",\n    configuration_item_type: \"ComputerSystem\",\n    configuration_item: jsondata.name + \"-\" + jsondata.id,\n    host: jsondata.name + \"-\" + jsondata.id,\n    ip: \"10.10.10.10\",\n    tags: [\"London\",\"weather\"]\n};\nentries.push(doc);\ndoc = {\n    timestamp: date,\n    metric_name: \"humidity\",\n    metric_type: \"humidity\",\n    metric_value: jsondata.main.humidity,\n    metric_unit: \"percent\",\n    configuration_item_type: \"ComputerSystem\",\n    configuration_item: jsondata.name + \"-\" + jsondata.id,\n    host: jsondata.name + \"-\" + jsondata.id,\n    ip: \"10.10.10.10\",\n    tags: [\"London\",\"weather\"]\n};\nentries.push(doc);\ndoc = {\n    timestamp: date,\n    metric_name: \"wind\",\n    metric_type: \"wind\",\n    metric_value: jsondata.wind.speed,\n    metric_unit: \"kts\",\n    configuration_item_type: \"ComputerSystem\",\n    configuration_item: jsondata.name + \"-\" + jsondata.id,\n    host: jsondata.name + \"-\" + jsondata.id,\n    ip: \"10.10.10.10\",\n    tags: [\"London\",\"weather\"]\n};\nentries.push(doc);\ndoc = {\n    timestamp: date,\n    metric_name: \"wind-dir\",\n    metric_type: \"wind-dir\",\n    metric_value: jsondata.wind.deg,\n    metric_unit: \"deg\",\n    configuration_item_type: \"ComputerSystem\",\n    configuration_item: jsondata.name + \"-\" + jsondata.id,\n    host: jsondata.name + \"-\" + jsondata.id,\n    ip: \"10.10.10.10\",\n    tags: [\"London\",\"weather\"]\n};\nentries.push(doc);\nvar payload = {\n    tenant_id: \"BB4F7709-14FC-59BB-744E-A689B3187C62\",\n    documents: entries\n};\nvariables.set(\"payload\",JSON.stringify(payload));\n//response.body = JSON.stringify(payload);"
+      ], 
+      "multipart_form": [], 
+      "before_scripts": [], 
+      "data": "", 
+      "method": "GET"
+    }, 
+    {
+      "body": "{{payload}}", 
+      "skipped": false, 
+      "form": {}, 
+      "headers": {
+        "Host": [
+          "logcollector-route-6060-doiproject.ip-172-31-46-231.eu-central-1.compute.internal"
+        ], 
+        "Content-Type": [
+          "application/json"
+        ], 
+        "Accept": [
+          "application/json"
+        ]
+      }, 
+      "url": "http://18.194.163.155/mdo/v2/aoanalytics/ingestion/metrics", 
+      "variables": [], 
+      "multipart_form": [], 
+      "step_type": "request", 
+      "auth": {}, 
+      "note": "", 
+      "fragment": "", 
+      "assertions": [
+        {
+          "comparison": "equal_number", 
+          "value": 200, 
+          "source": "response_status"
+        }
+      ], 
+      "scripts": [], 
+      "before_scripts": [], 
+      "method": "POST"
+    }
+  ], 
+  "description": "Weather Data"
+}
